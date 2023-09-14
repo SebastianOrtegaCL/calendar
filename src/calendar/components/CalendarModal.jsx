@@ -1,6 +1,9 @@
-import Modal from 'react-modal';
 import {useState} from "react";
 import { addHours } from 'date-fns';
+
+import Modal from 'react-modal';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 const customStyles = {
     content: {
@@ -14,6 +17,7 @@ const customStyles = {
 };
 
 Modal.setAppElement('#root');
+
 export const CalendarModal = () => {
     const onCloseModal = () => {
         console.log('Modal closed');
@@ -34,7 +38,14 @@ export const CalendarModal = () => {
             ...formValues,
             [target.name]: target.value
         });
-    }
+    };
+
+    const onDateChange = (event, changing) => {
+        setFormValues({
+            ...formValues,
+            [changing]: event
+        });
+    };
 
     return (
         <Modal
@@ -51,12 +62,23 @@ export const CalendarModal = () => {
 
             <div className="form-group mb-2">
                 <label>Fecha y hora inicio</label>
-                <input className="form-control" placeholder="Fecha inicio" />
+                <DatePicker
+                    selected={ formValues.start }
+                    className="form-control"
+                    onChange={ (event) => onDateChange(event, 'start') }
+                    dateFormat='pP'
+                />
             </div>
 
             <div className="form-group mb-2">
                 <label>Fecha y hora fin</label>
-                <input className="form-control" placeholder="Fecha inicio" />
+                <DatePicker
+                    minDate={ formValues.start }
+                    selected={ formValues.end }
+                    className="form-control"
+                    onChange={ (event) => onDateChange(event, 'end') }
+                    dateFormat='pP'
+                />
             </div>
 
             <hr />
