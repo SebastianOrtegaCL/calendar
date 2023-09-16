@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useMemo, useState} from "react";
 import {addHours, differenceInSeconds} from 'date-fns';
 
 import Modal from 'react-modal';
@@ -31,6 +31,7 @@ export const CalendarModal = () => {
     };
 
     const [isOpen, setIsOpen] = useState(true);
+    const [formSubmitted, setFormSubmitted] = useState(false);
 
     const [formValues, setFormValues] = useState({
         title: 'Sebastian',
@@ -38,6 +39,11 @@ export const CalendarModal = () => {
         start: new Date(),
         end: addHours(new Date(), 2),
     });
+
+    const titleClass = useMemo(() => {
+        if (!formSubmitted) return '';
+        return formValues.title.length > 0 ? '' : 'is-invalid';
+    }, [formValues.title, formSubmitted]);
 
     const onInputChange = ({target}) => {
         setFormValues({
@@ -55,6 +61,8 @@ export const CalendarModal = () => {
 
     const onSubmit = (event) => {
         event.preventDefault();
+        setFormSubmitted(true);
+
         const diff = differenceInSeconds(formValues.end, formValues.start);
         console.log({diff});
         if( isNaN( diff ) || diff < 0 ) {
@@ -62,8 +70,6 @@ export const CalendarModal = () => {
             return;
         }
         if(formValues.title.length <=0 ) return;
-
-        console.log(formValues);
 
         //Todo:
         // Remove displayed errors
@@ -117,12 +123,13 @@ export const CalendarModal = () => {
                 <label>Titulo y notas</label>
                 <input 
                     type="text" 
-                    className="form-control"
+                    className={`form-control ${ titleClass }`}
                     placeholder="Título del evento"
                     name="title"
                     autoComplete="off"
                     value={ formValues.title }
-                    onChange={ onInputChange } 
+                    onChange={ onInputChange }
+
                 />
                 <small id="emailHelp" className="form-text text-muted">Una descripción corta</small>
             </div>
