@@ -1,3 +1,25 @@
+/*FabAddNew*/
+.fab {
+  border-radius: 100%;
+  bottom: 25px;
+  font-size: 30px;
+  padding: 25px;
+  position: fixed;
+  right: 25px;
+
+}
+
+/*FabDelete*/
+.fab-delete {
+  border-radius: 100%;
+  bottom: 25px;
+  font-size: 30px;
+  padding: 25px;
+  position: fixed;
+  right: 25px;
+}
+
+
 /* Modal */
 .ReactModalPortal > div{
   opacity: 0;
